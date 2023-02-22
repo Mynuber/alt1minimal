@@ -7,6 +7,7 @@ export class Slider {
     private lockedTiles: Map<string, boolean> = new Map<string, boolean>();
 
     private directionFromParent: SliderMove;
+    blankTileSymbol: string = "#";
 
 
     constructor(sliderString: string) {
@@ -85,17 +86,17 @@ export class Slider {
     }
 
     private setLockedTiles() {
-        var char = this.getNextSolvableTile();
-        var indexUpTo = this.getExpectedTilePositionIndex(char);
+        // var char = this.getNextSolvableTile();
+        // var indexUpTo = this.getExpectedTilePositionIndex(char);
 
-        if (indexUpTo % 5 == 3) {
-            indexUpTo--;
-        }
+        // if (indexUpTo % 5 == 3) {
+        //     indexUpTo--;
+        // }
 
-        // get all the tiles before this and lock them
-        for (var i = 0; i < indexUpTo; i++) {
-            this.lockedTiles.set(String.fromCharCode("a".charCodeAt(0) + i), true);
-        }
+        // // get all the tiles before this and lock them
+        // for (var i = 0; i < indexUpTo; i++) {
+        //     this.lockedTiles.set(String.fromCharCode("a".charCodeAt(0) + i), true);
+        // }
 
     }
 
@@ -227,11 +228,14 @@ export class Slider {
     printAllParents() {
         var slider = this;
         console.log("Printing all parents: ")
+        var count = 0;
         while (slider != null) {
-            slider.printSliderStringAsMultiLine();
-            console.log("Slider Move: " + slider.getMoveFromParent())
+            // slider.printSliderStringAsMultiLine();
+            // console.log("Slider Move: " + slider.getMoveFromParent())
             slider = slider.parent;
+            count++;
         }
+        console.log("Total number of parents(moves): " + count);
     }
 
     printSliderStringAsMultiLine() {

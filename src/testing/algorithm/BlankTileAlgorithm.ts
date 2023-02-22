@@ -4,8 +4,7 @@ import { Algorithm } from "./Algorithm";
 // This is the algorithm to find best path to take blank tile to goal tile
 class BlankTileAlgorithm extends Algorithm {
     slider: Slider;
-    private lockedTiles: Set<string>;
-    private importantTile = "#";
+    private lockedTiles: Set<string> = new Set();
     //This is the tile we want to move towards. Not onto, but towards.
     private goalTile: string;
 
@@ -19,7 +18,6 @@ class BlankTileAlgorithm extends Algorithm {
     getFitnessFunction(): (slider: Slider) => number {
         return (slider: Slider) => {
             // Manhattan distance of blank tile to goal tile
-            var result = 0;
 
             // Get index of blank tile
             var blankIndex = slider.getSliderString().indexOf("#");
@@ -32,7 +30,12 @@ class BlankTileAlgorithm extends Algorithm {
             var goalCol = goalIndex % slider.getBoardSize();
 
             // Calculate Manhattan distance
-            result = Math.abs(blankRow - goalRow) + Math.abs(blankCol - goalCol);
+            var result = Math.abs(blankRow - goalRow) + Math.abs(blankCol - goalCol);
+
+            // Logic to allow even adjacent tiles to be considered "next to" each other
+            if (Math.abs(blankRow - goalRow) == 1 && Math.abs(blankCol - goalCol) == 1) {
+                return 0;
+            }
 
             // We only want to get next to the goal tile, not on it
             return result - 1;
@@ -40,12 +43,15 @@ class BlankTileAlgorithm extends Algorithm {
     }
 
     getImportantTiles(): Set<string> {
-        return new Set([this.importantTile, this.goalTile]);
+        return new Set([this.slider.blankTileSymbol, this.goalTile]);
     }
 
     getLockedTiles(): Set<string> {
         return this.lockedTiles;
     }
+
+    // Can probably add some hardcoded smarts to choose which adjacent tile is the best
+    // based on the expectedPosition for the goal Tile.
 
 }
 
