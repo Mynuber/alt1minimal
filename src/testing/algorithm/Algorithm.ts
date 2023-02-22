@@ -30,7 +30,7 @@ abstract class Algorithm {
     private BFS(getFitnessFunction: (slider: Slider) => number) {
         var visited = new Set<string>();
         var queue = priorityQueue<Slider>();
-        queue.insert(this.slider, getFitnessFunction(this.slider));
+        queue.insert(this.slider, 0);
 
         while (!queue.isEmpty()) {
             // console.log("Queue length: " + queue.length);
@@ -50,7 +50,7 @@ abstract class Algorithm {
                 var nextSlider = nextSliders[i];
                 var nextSliderHash = nextSlider.getSliderHash(this.getImportantTiles());
                 if (!visited.has(nextSliderHash)) {
-                    queue.insert(nextSlider, 1000 - getFitnessFunction(nextSlider));
+                    queue.insert(nextSlider, -getFitnessFunction(nextSlider));
                 }
             }
         }
